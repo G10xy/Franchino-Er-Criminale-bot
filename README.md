@@ -3,7 +3,7 @@ Questo è un bot di Telegram ispirato dal popolare canale YouTube, Franchino Er 
 Il bot è progettato per guidare gli utenti attraverso una serie di categorie, città e quartieri, così da fornire un'esperienza interattiva.
 
 ### Come si usa 
-Per utilizzare il FEC-bot, devi avviare una chat con il bot su Telegram, clicca qui
+Per utilizzare il FEC-bot, devi avviare una chat con il bot su Telegram, clicca qui https://t.me/fec_u_bot
 Puoi quindi utilizzare il comando /start per iniziare l'interazione.
 Il bot ti guiderà attraverso il processo, fornendo opzioni e informazioni basate sulle tue selezioni.
 
