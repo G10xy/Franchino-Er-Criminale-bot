@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 class BOT:
     def __init__(self, token):
         self.bot = TeleBot(token)
-        self.user_data = TTLCache(maxsize=1024, ttl=30)
+        self.user_data = TTLCache(maxsize=1024, ttl=60)
         self.db_dao = DAO()
         self.db_updater = DatabaseUpdater()
         self.register_handlers()
