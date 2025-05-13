@@ -53,22 +53,40 @@ class BOT:
             button2 = types.InlineKeyboardButton('Forni', callback_data='2')
             button3 = types.InlineKeyboardButton('Rosticcerie', callback_data='3')
             button4 = types.InlineKeyboardButton('Panini', callback_data='4')
-            markup.add(button1, button2, button3, button4)
+            button5 = types.InlineKeyboardButton('Pizza a taglio', callback_data='5')
+            button6 = types.InlineKeyboardButton('Pizza tonda', callback_data='6')
+            button7 = types.InlineKeyboardButton('Pasticceria', callback_data='7')
+            button8 = types.InlineKeyboardButton('Tramezzini', callback_data='8')
+            button9 = types.InlineKeyboardButton('Piadine', callback_data='9')
+            button10 = types.InlineKeyboardButton('Fritti', callback_data='10')
+            markup.add(button1, button2, button3, button4, button5, button6, button7, button8, button9, button10)
             self.bot.send_message(message.chat.id, 'Scegli la categoria criminale di interesse:', reply_markup=markup)  
 
         @self.bot.callback_query_handler(func=lambda call: True)
         def callback_query(call):
             msg = ''
             if call.data == '1':
-                msg += 'Hai selezionato Gelaterie.'
+                msg += 'Hai selezionato Gelaterie'
             elif call.data == '2':
-                msg += 'Hai selezionato Forni.'
+                msg += 'Hai selezionato Forni'
             elif call.data == '3':
-                msg += 'Hai selezionato Rosticcerie.'
+                msg += 'Hai selezionato Rosticcerie'
             elif call.data == '4':
-                msg += 'Hai selezionato Panini.'
+                msg += 'Hai selezionato Panini'
+            elif call.data == '5':
+                msg += 'Hai selezionato Pizza a taglio'
+            elif call.data == '6':
+                msg += 'Hai selezionato Pizza tonda'        
+            elif call.data == '7':
+                msg += 'Hai selezionato Pasticceria'  
+            elif call.data == '8':
+                msg += 'Hai selezionato Tramezzini'       
+            elif call.data == '9':
+                msg += 'Hai selezionato Piadine'    
+            elif call.data == '10':
+                msg += 'Hai selezionato Fritti'        
             self.user_data[call.message.chat.id][CATEGORY_ID] = call.data  
-            self.bot.send_message(call.message.chat.id, msg+' Ora clicca su /citta')    
+            self.bot.send_message(call.message.chat.id, msg+'. Ora clicca su /citta')    
 
         @self.bot.message_handler(commands=['citta'])
         def city_command(message):
