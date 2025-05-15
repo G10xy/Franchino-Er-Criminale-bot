@@ -16,7 +16,7 @@ class DAO:
             pool_pre_ping=True      
         )
         Base.metadata.create_all(self.engine) 
-        self.Session = sessionmaker(bind=self.engine) 
+        self.Session = sessionmaker(bind=self.engine, expire_on_commit=False)
 
     @contextmanager 
     def get_session(self):
