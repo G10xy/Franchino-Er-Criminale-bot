@@ -87,18 +87,22 @@ class BOT:
             self.bot.register_next_step_handler(sent_msg, city_handler)
 
         def city_handler(message):
-            city = InputValidator.validate_name(message.text)
             try:
+                city = InputValidator.validate_name(message.text)
                 foundCity = self.db_dao.find_city(city)
                 if foundCity is not None:
                     self.set_user_city(message.chat.id, foundCity.id)
                     self.bot.send_message(message.chat.id, f"Hai inserito: {city}. Ora clicca /quartiere")
                 else:
                     self.bot.send_message(message.chat.id, 'Nessuna città presente... riprova /citta') 
+            except ValueError as ve:
+                self.handle_error(message.chat.id, ve)         
             except KeyError as ke:
                 self.handle_error(message.chat.id, ke, 'Dati inconsistenti, forse è passato troppo tempo o hai saltato un passaggio... riprova ricominciando da /start')
+                self.user_data.pop(message.chat.id)
             except Exception as e:
                 self.handle_error(message.chat.id, e, 'Si è verificato un errore... riprova /start') 
+                self.user_data.pop(message.chat.id)
 
         @self.bot.message_handler(commands=['quartiere'])
         def neighborhood_command(message):
@@ -106,8 +110,8 @@ class BOT:
             self.bot.register_next_step_handler(sent_msg, neighborhood_handler)
 
         def neighborhood_handler(message):
-            neighborhood = InputValidator.validate_name(message.text)
             try:
+                neighborhood = InputValidator.validate_name(message.text)
                 city_id = self.get_user_data(message.chat.id, CITY_ID)
                 foundNeighborhood = self.db_dao.find_neighborhood(neighborhood, city_id)
                 if foundNeighborhood is not None:
@@ -115,10 +119,14 @@ class BOT:
                     self.bot.send_message(message.chat.id, f"Hai inserito: {neighborhood}.\nOra clicca /risultati per avere la lista dei locali relativi alle tue scelte, ordinati per voto")  
                 else:
                     self.bot.send_message(message.chat.id, 'Non è stato trovato alcun quartiere... \nriprova /quartiere')   
+            except ValueError as ve:
+                self.handle_error(message.chat.id, ve)          
             except KeyError as ke:
                 self.handle_error(message.chat.id, ke, 'Dati inconsistenti, forse è passato troppo tempo o hai saltato un passaggio... riprova ricominciando da /start')
+                self.user_data.pop(message.chat.id)
             except Exception as e:
                 self.handle_error(message.chat.id, e, 'Si è verificato un errore... riprova /start')   
+                self.user_data.pop(message.chat.id)
 
         @self.bot.message_handler(commands=['risultati'])
         def result_command(message):
