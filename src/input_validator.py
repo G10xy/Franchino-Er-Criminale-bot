@@ -5,7 +5,7 @@ class InputValidator:
 
     @staticmethod
     def validate_name(city_name: str) -> Optional[str]:
-        """Validate city name input"""
+        """Validate string input"""
         if not city_name:
             raise ValueError("Il nome della città non può essere vuoto")
         

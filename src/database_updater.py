@@ -15,7 +15,8 @@ class DatabaseUpdater:
         Base.metadata.create_all(self.engine, checkfirst=True)
         self.DBSession = sessionmaker(bind=self.engine)
         self.session = self.DBSession()
-        self.xls = pd.ExcelFile('FILE_PATH')
+        FILE_PATH = os.getenv('FILE_PATH')
+        self.xls = pd.ExcelFile(FILE_PATH)
 
     def pre_populateDB(self):
         df_categories = pd.read_excel(self.xls, 'category')
