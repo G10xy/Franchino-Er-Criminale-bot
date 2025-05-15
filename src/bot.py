@@ -24,6 +24,7 @@ class BOT:
     def handle_error(self, chat_id, error, message):
         traceback.print_exc()
         logging.error(f"Error: {error}")
+        message = error if not message else message
         self.bot.send_message(chat_id, message)    
         
     def set_user_data(self, chat_id):
