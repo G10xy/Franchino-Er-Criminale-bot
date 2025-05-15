@@ -9,6 +9,6 @@ Il bot ti guiderà attraverso il processo, fornendo opzioni e informazioni basat
 
 ### Come aiutare
 Per permettere di avere un bot con quante più informazioni possibili, apri il seguente link e aggiungi o modifica il file
-https://www.dropbox.com/scl/fi/oitkr8ua5p3ipqt5pv5t6/registry-fec-bot.xlsx?rlkey=b7amnubswb6mrfno7v0nohnp6&st=jfp01ydg&dl=0
+https://docs.google.com/spreadsheets/d/1H7IQFrUnqIMUGYBJuYuZkM_pKhPIOCjgaAyW4A7b5tE/edit?usp=sharing
 
 _Grazie per il tuo interesse nel progetto FEC-bot! Spero che ti sarà utile per trovare posti giusti in cui mangiare e bere!_
