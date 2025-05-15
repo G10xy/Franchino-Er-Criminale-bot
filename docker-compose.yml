@@ -1,23 +1,25 @@
 version: '3.8'
+
 services:
   bot:
     build: .
     container_name: bot-app
     volumes:
       - ./src:/app
-      - ./doc/{EXCEL_NAME}:{FILE_PATH}
+      - ./registry-fec-bot.xlsx:/app/registry-fec-bot.xlsx
     depends_on:
       db:
         condition: service_healthy
     environment:
       EXCEL_NAME: registry-fec-bot.xlsx
-      FILE_PATH: /app/{EXCEL_NAME}
+      FILE_PATH: /app/registry-fec-bot.xlsx
       DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
       BOT_TOKEN: ${BOT_TOKEN}
     command: ["python3", "bot.py"]
     networks:
       - bot-network
-    restart: unless-stopped  
+    restart: unless-stopped
+
   db:
     image: postgres:latest
     container_name: db-bot
@@ -28,17 +30,17 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_PASSWORD}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 10s
       retries: 3
       start_period: 30s
-      timeout: 10s  
+      timeout: 10s
     volumes:
       - ./database:/var/lib/postgresql/data
     networks:
       - bot-network
-    restart: unless-stopped   
+    restart: unless-stopped
 
 networks:
   bot-network:
-    driver: bridge      
+    driver: bridge
