@@ -5,11 +5,13 @@ services:
     container_name: bot-app
     volumes:
       - ./src:/app
-      - ./registry-fec-bot.xlsx:/app/registry-fec-bot.xlsx
+      - ./doc/{EXCEL_NAME}:{FILE_PATH}
     depends_on:
       db:
         condition: service_healthy
     environment:
+      EXCEL_NAME: registry-fec-bot.xlsx
+      FILE_PATH: /app/{EXCEL_NAME}
       DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
       BOT_TOKEN: ${BOT_TOKEN}
     command: ["python3", "bot.py"]
