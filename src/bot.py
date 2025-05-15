@@ -64,29 +64,21 @@ class BOT:
 
         @self.bot.callback_query_handler(func=lambda call: True)
         def callback_query(call):
-            msg = ''
-            if call.data == '1':
-                msg += 'Hai selezionato Gelaterie'
-            elif call.data == '2':
-                msg += 'Hai selezionato Forni'
-            elif call.data == '3':
-                msg += 'Hai selezionato Rosticcerie'
-            elif call.data == '4':
-                msg += 'Hai selezionato Panini'
-            elif call.data == '5':
-                msg += 'Hai selezionato Pizza a taglio'
-            elif call.data == '6':
-                msg += 'Hai selezionato Pizza tonda'        
-            elif call.data == '7':
-                msg += 'Hai selezionato Pasticceria'  
-            elif call.data == '8':
-                msg += 'Hai selezionato Tramezzini'       
-            elif call.data == '9':
-                msg += 'Hai selezionato Piadine'    
-            elif call.data == '10':
-                msg += 'Hai selezionato Fritti'        
-            self.user_data[call.message.chat.id][CATEGORY_ID] = call.data  
-            self.bot.send_message(call.message.chat.id, msg+'. Ora clicca su /citta')    
+            try:
+                category_id = InputValidator.validate_category_id(call.data)
+                
+                category_messages = {
+                    1: 'Gelaterie', 2: 'Forni', 3: 'Rosticcerie', 4: 'Panini', 5: 'Pizza a taglio',
+                    6: 'Pizza tonda', 7: 'Pasticceria', 8: 'Tramezzini', 9: 'Piadine', 10: 'Fritti'
+                }
+                
+                msg = f'Hai selezionato {category_messages[category_id]}'
+                self.set_user_category(call.message.chat.id, category_id)
+                self.bot.send_message(call.message.chat.id, msg + '. Ora clicca su /citta')    
+                
+            except ValueError as ve:
+                self.bot.send_message(call.message.chat.id, f"Errore: {str(ve)}. Riprova /categorie")    
+
 
         @self.bot.message_handler(commands=['citta'])
         def city_command(message):
@@ -94,7 +86,7 @@ class BOT:
             self.bot.register_next_step_handler(sent_msg, city_handler)
 
         def city_handler(message):
-            city = message.text
+            city = InputValidator.validate_name(message.text)
             try:
                 foundCity = self.db_dao.find_city(city)
                 if foundCity is not None:
@@ -113,7 +105,7 @@ class BOT:
             self.bot.register_next_step_handler(sent_msg, neighborhood_handler)
 
         def neighborhood_handler(message):
-            neighborhood = message.text
+            neighborhood = InputValidator.validate_name(message.text)
             try:
                 city_id = self.get_user_data(message.chat.id, CITY_ID)
                 foundNeighborhood = self.db_dao.find_neighborhood(neighborhood, city_id)

@@ -11,11 +11,11 @@ class DAO:
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
 
-    def find_city(self, city_name):
+    def find_city(self, city_name: str):
         return self.session.query(City).filter(func.lower(City.name) == func.lower(city_name.strip())).first()
 
-    def find_neighborhood(self, neighborhood_name, city_id):
+    def find_neighborhood(self, neighborhood_name: str, city_id: int):
         return self.session.query(Neighborhood).filter(func.lower(Neighborhood.name)==func.lower(neighborhood_name.strip()), Neighborhood.city_id==city_id).first()
 
-    def get_stores(self, neighborhood_id, category_id):
+    def get_stores(self, neighborhood_id: int, category_id: int):
         return self.session.query(Store).filter_by(neighborhood_id=neighborhood_id, criminal_category_id=category_id).order_by(Store.vote.desc()).all()  
