@@ -5,6 +5,7 @@ from cachetools import TTLCache
 from database_updater import DatabaseUpdater
 import traceback
 import logging
+from input_validator import InputValidator
 
 CATEGORY_ID = 'category_id'
 CITY_ID = 'city_id'
