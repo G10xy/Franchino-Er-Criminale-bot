@@ -25,6 +25,7 @@ class BOT:
         traceback.print_exc()
         logging.error(f"Error: {error}")
         message = error if not message else message
+        logging.info('Info ', {message})
         self.bot.send_message(chat_id, message)    
         
     def set_user_data(self, chat_id):
@@ -149,11 +150,15 @@ class BOT:
             for store in stores:
                 msg_result += f"{store.name}\nin {store.address} con voto: {store.vote}{' pieno' if store.full_vote else ''}\n"
                 if store.comment and store.comment.strip() and store.comment != 'NaN':
-                  msg_result += f"Commento: {store.comment}\n"
+                    msg_result += f"Commento: {store.comment}\n"
+                # Add Google Maps link if latitude and longitude are available
+                if store.latitude and store.longitude and store.latitude != 0 and store.longitude != 0:
+                    maps_link = f"https://www.google.com/maps?q={store.latitude},{store.longitude}"
+                    msg_result += f"📍 [Apri in Google Maps]({maps_link})\n"
                 msg_result += "\n\n"
             msg_result += "Se vuoi fare un'altra ricerca, ricomincia da /start"    
             self.user_data.pop(message.chat.id)
-            self.bot.send_message(message.chat.id, msg_result)
+            self.bot.send_message(message.chat.id, msg_result, parse_mode="Markdown")
 
     def run(self):
         self.db_updater.pre_populateDB()
