@@ -24,8 +24,6 @@ class BOT:
     def handle_error(self, chat_id, error, message):
         traceback.print_exc()
         logging.error(f"Error: {error}")
-        message = error if not message else message
-        logging.info('Info ', {message})
         self.bot.send_message(chat_id, message)    
         
     def set_user_data(self, chat_id):
@@ -98,7 +96,7 @@ class BOT:
                 else:
                     self.bot.send_message(message.chat.id, 'Nessuna città presente... riprova /citta') 
             except ValueError as ve:
-                self.handle_error(message.chat.id, ve)         
+                self.handle_error(message.chat.id, ve, str(ve)+' Riprova da /citta')        
             except KeyError as ke:
                 self.handle_error(message.chat.id, ke, 'Dati inconsistenti, forse è passato troppo tempo o hai saltato un passaggio... riprova ricominciando da /start')
                 self.user_data.pop(message.chat.id)
@@ -122,7 +120,8 @@ class BOT:
                 else:
                     self.bot.send_message(message.chat.id, 'Non è stato trovato alcun quartiere... \nriprova /quartiere')   
             except ValueError as ve:
-                self.handle_error(message.chat.id, ve)          
+                self.handle_error(message.chat.id, ve, str(ve)+' Riprova da /quartiere')      
+                self.bot.register_next_step_handler('Riprovare', neighborhood_handler)    
             except KeyError as ke:
                 self.handle_error(message.chat.id, ke, 'Dati inconsistenti, forse è passato troppo tempo o hai saltato un passaggio... riprova ricominciando da /start')
                 self.user_data.pop(message.chat.id)
