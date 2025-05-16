@@ -7,17 +7,17 @@ class InputValidator:
     def validate_name(city_name: str) -> Optional[str]:
         """Validate string input"""
         if not city_name:
-            raise ValueError("Il nome della città non può essere vuoto")
+            raise ValueError("Il valore inserito non può essere vuoto")
         
         city_name = city_name.strip()
         
         if len(city_name) < 2:
-            raise ValueError("Il nome della città deve avere almeno 2 caratteri")
+            raise ValueError("Il valore inserito deve avere almeno 2 caratteri")
         if len(city_name) > 20:
-            raise ValueError("Il nome della città è troppo lungo (max 50 caratteri)")
+            raise ValueError("Il valore inserito è troppo lungo (max 50 caratteri)")
         
         if not re.match(r'^[a-zA-ZÀ-ÿ\s\-\'\.]+$', city_name):
-            raise ValueError("Il nome della città contiene caratteri non validi")
+            raise ValueError("Il nome contiene caratteri non validi")
         
         return city_name
 
