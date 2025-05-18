@@ -152,10 +152,8 @@ class BOT:
                 msg_result += f"{store.name}\nin {store.address} con voto: {store.vote}{' pieno' if store.full_vote else ''}\n"
                 if store.comment and store.comment.strip() and store.comment != 'NaN':
                     msg_result += f"Commento: {store.comment}\n"
-                # Add Google Maps link if latitude and longitude are available
-                if store.latitude and store.longitude and store.latitude != 0 and store.longitude != 0:
-                    maps_link = f"https://www.google.com/maps?q={store.name}/@{store.latitude},{store.longitude}"
-                    msg_result += f"📍 [Apri in Google Maps]({maps_link})\n"
+                if store.maps_link and store.maps_link.strip():
+                    msg_result += f"[Apri in Google Maps]({store.maps_link})\n"
                 msg_result += "\n\n"
             msg_result += "Se vuoi fare un'altra ricerca, ricomincia da /start"    
             self.user_data.pop(message.chat.id)
