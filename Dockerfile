@@ -1,10 +1,10 @@
-FROM python:3.9-slim-buster
+FROM python:3.10-slim
 
 WORKDIR /app
 
 COPY src/ .
 COPY requirements.txt .
-COPY registry-fec-bot.xlsx .
+COPY data/ .
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
