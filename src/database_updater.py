@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import exists
 import pandas as pd
 import logging
+from input_validator import InputValidator
 import os
 
 
@@ -90,12 +91,13 @@ class DatabaseUpdater:
             stores_to_upsert = []
             updated_count = 0
             for index, row in df_stores.iterrows():
+                if not InputValidator.contains_google_maps_url(row['link']):
+                    continue
                 store = self.session.query(Store).filter_by(id=row['id'], name=row['name']).first()
                 if store:
                     store.address = row['address']
                     store.vote = row['vote']
-                    store.latitude = row['latitude']
-                    store.longitude = row['longitude']
+                    store.maps_link = row['link']
                     store.full_vote = row['full_vote']
                     store.comment = row['comment']
                     store.updated_at = datetime.now()
@@ -108,8 +110,7 @@ class DatabaseUpdater:
                         'name': row['name'],
                         'address': row['address'],
                         'vote': row['vote'],
-                        'latitude': row['latitude'],
-                        'longitude': row['longitude'],
+                        'maps_link': row['link'],
                         'full_vote': row['full_vote'],
                         'comment': row['comment'],
                         'created_at': datetime.now(),

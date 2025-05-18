@@ -31,3 +31,9 @@ class InputValidator:
             return cat_id
         except ValueError:
             raise ValueError("ID categoria non valido")    
+
+    @staticmethod
+    def contains_google_maps_url(text: str) -> bool:
+        """ Check if the text contains a Google Maps URL """
+        google_maps_pattern = r'https://(maps\.app\.goo\.gl/[a-zA-Z0-9]+|g\.co/kgs/[a-zA-Z0-9]+)'
+        return re.search(google_maps_pattern, text)        
