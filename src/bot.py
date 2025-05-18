@@ -6,6 +6,7 @@ from database_updater import DatabaseUpdater
 import traceback
 import logging
 from input_validator import InputValidator
+from remote_file_updater import RemoteFileUpdater
 
 CATEGORY_ID = 'category_id'
 CITY_ID = 'city_id'
@@ -19,6 +20,7 @@ class BOT:
         self.user_data = TTLCache(maxsize=1024, ttl=60)
         self.db_dao = DAO()
         self.db_updater = DatabaseUpdater()
+        self.remote_file_updater = RemoteFileUpdater()
         self.register_handlers()
         
     def handle_error(self, chat_id, error, message):
@@ -152,7 +154,7 @@ class BOT:
                     msg_result += f"Commento: {store.comment}\n"
                 # Add Google Maps link if latitude and longitude are available
                 if store.latitude and store.longitude and store.latitude != 0 and store.longitude != 0:
-                    maps_link = f"https://www.google.com/maps?q={store.latitude},{store.longitude}"
+                    maps_link = f"https://www.google.com/maps?q={store.name}/@{store.latitude},{store.longitude}"
                     msg_result += f"📍 [Apri in Google Maps]({maps_link})\n"
                 msg_result += "\n\n"
             msg_result += "Se vuoi fare un'altra ricerca, ricomincia da /start"    
@@ -161,6 +163,7 @@ class BOT:
 
     def run(self):
         self.db_updater.pre_populateDB()
+        self.remote_file_updater.start_periodic_check(callback=self.db_updater.update_from_excel)
         self.bot.polling()
 
 if __name__ == '__main__':
